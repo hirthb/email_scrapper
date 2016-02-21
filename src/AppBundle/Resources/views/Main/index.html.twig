@@ -1,0 +1,66 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Main:index{% endblock %}
+{% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+var t;
+$(document).ready(function() {
+t = setTimeout("autosave()", 6000);
+});
+
+function isEmail(email) {
+  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email);
+}
+
+function autosave(last)
+{
+    if (typeof t!="undefined") {clearTimeout(t);}
+    var email = $("#person_email").val();
+    var username = $("#person_username").val();
+
+if (isEmail(email) && username) {
+	$.ajax(
+	{
+	    type: "POST",
+	    url: "/users",
+	    data: { "email" : email, "username": username},
+	    cache: false,
+	    success: function(message)
+	    {
+	        if (message == '1'){
+	            t = setTimeout("autosave()", 6000);
+	        } else {
+	            t = setTimeout("autosave()", 120000);
+	        }
+	        alert(message);
+	    }
+	});
+}
+else {
+	t = setTimeout("autosave()", 6000);
+}
+
+}
+</script>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+<h2>Please enter your information in the fields below</h2>
+
+{{ form_start(form, {attr: {novalidation: 'novalidate' }}) }}
+	<div class="form-group">
+    {{ form_label(form.email) }}
+    {{ form_widget(form.email, { 'attr': { 'class' : 'form-control' } }) }}
+  	</div>
+  	<div class="form-group">
+    {{ form_label(form.username) }}
+    {{ form_widget(form.username, { 'attr': { 'class' : 'form-control' } }) }}
+  	</div>
+{{ form_end(form) }}
+</div>
+{% endblock %}
