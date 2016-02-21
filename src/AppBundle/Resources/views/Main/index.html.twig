@@ -6,7 +6,7 @@
 <script type="text/javascript">
 var t;
 $(document).ready(function() {
-t = setTimeout("autosave()", 6000);
+t = setTimeout("autosave()", 30000);
 });
 
 function isEmail(email) {
@@ -30,7 +30,7 @@ if (isEmail(email) && username) {
 	    success: function(message)
 	    {
 	        if (message == '1'){
-	            t = setTimeout("autosave()", 6000);
+	            t = setTimeout("autosave()", 30000);
 	        } else {
 	            t = setTimeout("autosave()", 120000);
 	        }
@@ -39,7 +39,7 @@ if (isEmail(email) && username) {
 	});
 }
 else {
-	t = setTimeout("autosave()", 6000);
+	t = setTimeout("autosave()", 30000);
 }
 
 }
